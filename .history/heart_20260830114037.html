@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ishq Ban Baitha - Aesthetic Heart Magic</title>
+    <style>
+        /* Deep romantic dark gradient background */
+        body {
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle at center, #1a000d 0%, #000000 100%);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        /* Start Button ki Premium Styling */
+        #ui-container {
+            position: absolute;
+            z-index: 10;
+            text-align: center;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff0055, #ff0099);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0px 0px 30px rgba(255, 0, 102, 0.6);
+            transition: all 0.4s ease;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            transform: scale(1.08);
+            box-shadow: 0px 0px 50px rgba(255, 0, 102, 1);
+        }
+
+        /* Canvas ko pure screen pe set karna */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ui-container">
+        <button id="startBtn">Experience The Magic 💖</button>
+        <audio id="bgMusic" src="ISHQ BAN BAITHA.mp3"></audio>
+    </div>
+
+    <canvas id="heartCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('heartCanvas');
+        const ctx = canvas.getContext('2d');
+        const btn = document.getElementById('startBtn');
+        const audio = document.getElementById('bgMusic');
+        const uiContainer = document.getElementById('ui-container');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Heart ka perfect mathematical structure
+        function getHeartPoint(t) {
+            const x = 15 * Math.pow(Math.sin(t), 3);
+            const y = 11 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+            return { x, y };
+        }
+
+        let i = 0;
+        const totalSteps = 1200; // Density badhane ke liye steps increase kiye
+        const duration = 30000; // Exactly 30 seconds
+        let startTime = null;
+
+        // Ye line overlapping colors ko ek magical bright glow deti hai
+        ctx.globalCompositeOperation = 'lighter'; 
+
+        function drawMagicHeart(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const elapsed = timestamp - startTime;
+
+            // Time ke hisaab se calculate karega ki kitni lines draw karni hain
+            const targetSteps = Math.min(Math.floor((elapsed / duration) * totalSteps), totalSteps);
+
+            const scale = Math.min(canvas.width, canvas.height) / 45; 
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+
+            while (i < targetSteps) {
+                const t = i * (Math.PI * 2) / totalSteps;
+                const point = getHeartPoint(t);
+                
+                const finalX = centerX + (point.x * scale);
+                const finalY = centerY - (point.y * scale);
+
+                // Aesthetic Color Shifting (Deep pink se magenta ke beech shift hoga)
+                const hue = 320 + (Math.sin(t) * 20); 
+                
+                // --- MIXTURE PART 1: Center se aati hui transparent glowing line ---
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(finalX, finalY);
+                ctx.strokeStyle = `hsla(${hue}, 100%, 60%, 0.12)`; // Transparent soft line
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // --- MIXTURE PART 2: Border par heavy Neon glowing particles ---
+                ctx.beginPath();
+                ctx.arc(finalX, finalY, 1.8, 0, Math.PI * 2);
+                ctx.shadowBlur = 20; // HEAVY GLOW EFFECT
+                ctx.shadowColor = `hsl(${hue}, 100%, 60%)`; // Neon shadow color
+                ctx.fillStyle = `hsl(${hue}, 100%, 85%)`; // Core particle bright white-pink
+                ctx.fill();
+
+                // Lines ke liye shadow hata do taaki screen messy na lage
+                ctx.shadowBlur = 0; 
+
+                i++;
+            }
+
+            // Agar 30 seconds pure nahi hue hain, toh animation chalu rakho
+            if (i < totalSteps) {
+                requestAnimationFrame(drawMagicHeart);
+            }
+        }
+
+        // Play Magic
+        btn.addEventListener('click', () => {
+            uiContainer.style.display = 'none';
+            audio.play();
+            requestAnimationFrame(drawMagicHeart);
+        });
+    </script>
+</body>
+</html>
