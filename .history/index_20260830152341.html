@@ -87,26 +87,22 @@
 
         if (isMobile) {
             // 📱 MOBILE KE LIYE SECTION (Smoothness Priority)
-            TOTAL_RAYS = 1900;       
-            MAX_PARTICLES = 200;     
-            RAYS_PER_FRAME = 2;      
-            GLOW_BLUR = 3;           
+            TOTAL_RAYS = 1900;       // Dense but optimized
+            MAX_PARTICLES = 200;     // Kam stars lag rokne ke liye
+            RAYS_PER_FRAME = 0;      // Phone ko hang hone se bachaane ke liye
+            GLOW_BLUR = 3;           // Glow off to save Mobile GPU
         } else {
             // 💻 MAC / LAPTOP KE LIYE SECTION (Premium Quality Priority)
-            TOTAL_RAYS = 2400;       
-            MAX_PARTICLES = 350;     
-            RAYS_PER_FRAME = 8;      
-            GLOW_BLUR = 8;           
+            TOTAL_RAYS = 2400;       // Full dense fibers
+            MAX_PARTICLES = 350;     // Maximum stars
+            RAYS_PER_FRAME = 8;      // Fast rendering
+            GLOW_BLUR = 8;           // Full neon glow
         }
         // ------------------------------------------
 
         const DURATION = 25000; 
         let startTime = null;
         let raysDrawn = 0;
-        
-        // NAYA LOGIC: White hotspots ko rokne ke liye variables
-        let lastDustX = -9999;
-        let lastDustY = -9999;
 
         const staticCanvas = document.createElement('canvas');
         staticCanvas.width = width;
@@ -140,7 +136,7 @@
                 sCtx.beginPath();
                 sCtx.arc(px, py, radius, 0, Math.PI * 2);
                 sCtx.fillStyle = color;
-                sCtx.shadowBlur = GLOW_BLUR; 
+                sCtx.shadowBlur = GLOW_BLUR; // Value changes based on device
                 sCtx.shadowColor = '#ff2a7a';
                 sCtx.fill();
 
@@ -168,7 +164,7 @@
 
             const scale = Math.min(width, height) / 38;
             const centerX = width / 2;
-            const centerY = height / 2 - (scale * 2); 
+            const centerY = height / 2 - (scale * 2); // Center fix applied
 
             let raysThisFrame = targetRayIndex - raysDrawn;
             if (raysThisFrame > RAYS_PER_FRAME) raysThisFrame = RAYS_PER_FRAME; 
@@ -194,15 +190,7 @@
                 sCtx.shadowBlur = 0; 
                 sCtx.stroke();
 
-                // NAYA LOGIC: Distance check taaki white spots na bane
-                const dx = finalX - lastDustX;
-                const dy = finalY - lastDustY;
-                if (dx * dx + dy * dy > 1.5) { 
-                    addDustCloud(finalX, finalY, scale);
-                    lastDustX = finalX;
-                    lastDustY = finalY;
-                }
-                
+                addDustCloud(finalX, finalY, scale);
                 raysDrawn++;
             }
 
@@ -229,7 +217,7 @@
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(255, 220, 240, ${currentAlpha})`;
-                ctx.shadowBlur = GLOW_BLUR; 
+                ctx.shadowBlur = GLOW_BLUR; // Value changes based on device
                 ctx.shadowColor = '#ff4d94';
                 ctx.fill();
             }
