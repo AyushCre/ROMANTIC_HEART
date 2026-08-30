@@ -134,8 +134,8 @@
                 
                 const isWhiteSparkle = Math.random() > 0.98;
                 const color = isWhiteSparkle 
-                    ? `rgba(255, 100, 150, ${alpha * 0.5})`
-                    : `rgba(255, ${Math.floor(Math.random()*20)}, ${Math.floor(Math.random()*50 + 30)}, ${alpha * 0.9})`;
+                    ? `rgba(255, 240, 245, ${alpha})`
+                    : `rgba(255, ${Math.floor(Math.random()*80 + 30)}, ${Math.floor(Math.random()*150 + 100)}, ${alpha * 0.8})`;
 
                 sCtx.beginPath();
                 sCtx.arc(px, py, radius, 0, Math.PI * 2);
@@ -197,7 +197,7 @@
                 // NAYA LOGIC: Distance check taaki white spots na bane
                 const dx = finalX - lastDustX;
                 const dy = finalY - lastDustY;
-                if (dx * dx + dy * dy > 12) { 
+                if (dx * dx + dy * dy > 1.5) { 
                     addDustCloud(finalX, finalY, scale);
                     lastDustX = finalX;
                     lastDustY = finalY;
@@ -228,9 +228,9 @@
 
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 20, 80, ${currentAlpha})`;
+                ctx.fillStyle = `rgba(255, 220, 240, ${currentAlpha})`;
                 ctx.shadowBlur = GLOW_BLUR; 
-                ctx.shadowColor = '#cc0044';
+                ctx.shadowColor = '#ff4d94';
                 ctx.fill();
             }
             ctx.restore();
